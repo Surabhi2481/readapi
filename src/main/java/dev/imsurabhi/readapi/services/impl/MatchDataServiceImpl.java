@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Objects;
 
 @Service
@@ -25,6 +26,7 @@ public class MatchDataServiceImpl implements MatchDataService {
     @Override
     public MatchDataResponse matchDataAutomatedFlow() {
         // TODO: fetch data from Mongo.
+        long requestStartTimeInMillis = System.currentTimeMillis();
         MongoUsersResponseDto mongoUsersResponseDto = fetchDataService.fetchAllUsersFromMongo();
         if(Objects.isNull(mongoUsersResponseDto)) {
             logger.error("Got null response from fetchDataService");
@@ -43,12 +45,16 @@ public class MatchDataServiceImpl implements MatchDataService {
 
         MatchDataResponse matchDataResponse = new MatchDataResponse();
         if (isSimilar) {
-            matchDataResponse.setStatus(Boolean.TRUE.toString());
-            matchDataResponse.setMessage("Data sets are matching.");
+            matchDataResponse.setStatus("SUCCESS");
+            matchDataResponse.setDescription("Cassandra and Mongo responses are matching.");
         } else {
-            matchDataResponse.setStatus(Boolean.FALSE.toString());
-            matchDataResponse.setMessage("Data sets are different !");
+            matchDataResponse.setStatus("FAILURE");
+            matchDataResponse.setDescription("Cassandra and Mongo responses are not matching");
         }
+        long requestEndTime = System.currentTimeMillis();
+        matchDataResponse.setRequestTimeStamp(new Date(requestStartTimeInMillis));
+        matchDataResponse.setResponseTimeStamp(new Date(requestEndTime));
+
 
         return matchDataResponse;
     }

@@ -10,6 +10,7 @@ public class ReadapiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ReadapiApplication.class, args);
+		//System.out.println((System.currentTimeMillis()).getClass().getSimpleName());
 	}
 
 }

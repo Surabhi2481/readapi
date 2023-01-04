@@ -4,6 +4,9 @@ package dev.imsurabhi.readapi.response;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
+import java.util.Date;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,7 +15,10 @@ import lombok.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MatchDataResponse {
 
+    private Date requestTimeStamp;
+    private Date responseTimeStamp;
     private String status;
-    private String message;
+    private String description;
+    private List<ValidateDataResponse> response;
 
 }
